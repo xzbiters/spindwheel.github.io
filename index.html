@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +32,6 @@
         }
         .font-display { font-family:'Playfair Display',serif; }
 
-        /* Background layers */
         .bg-grad {
             position:fixed; inset:0; z-index:0; pointer-events:none;
             background:
@@ -45,7 +43,6 @@
             position:fixed; inset:0; z-index:1; pointer-events:none;
         }
 
-        /* Pointer */
         .pointer-wrap {
             position:absolute; top:-12px; left:50%; transform:translateX(-50%); z-index:15;
             display:flex; flex-direction:column; align-items:center;
@@ -62,7 +59,6 @@
             filter:drop-shadow(0 4px 8px rgba(201,168,76,0.4));
         }
 
-        /* Wheel glow */
         .wheel-glow {
             position:absolute; inset:-30px; border-radius:50%;
             background:radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 65%);
@@ -70,13 +66,11 @@
         }
         .wheel-glow.on { opacity:1; }
 
-        /* Outer ring */
         .wheel-ring {
             position:absolute; inset:-10px; border-radius:50%;
             border:2.5px solid rgba(201,168,76,0.3); pointer-events:none;
         }
 
-        /* Category buttons */
         .cat-btn {
             padding:.7rem 2rem; border:2px solid var(--border);
             background:transparent; color:var(--muted);
@@ -88,7 +82,6 @@
         .cat-btn.active { background:var(--accent); color:#0C0A0E; border-color:var(--accent); }
         .cat-btn:not(.active):hover { border-color:var(--accent); color:var(--accent); }
 
-        /* Spin button */
         .spin-btn {
             background:linear-gradient(135deg,#C9A84C,#9E7E2A);
             color:#0C0A0E; font-family:'Playfair Display',serif;
@@ -104,7 +97,6 @@
         .spin-btn:active:not(:disabled) { transform:translateY(0) scale(.97); }
         .spin-btn:disabled { opacity:.45; cursor:not-allowed; }
 
-        /* Result overlay */
         .result-overlay {
             position:fixed; inset:0; z-index:100;
             background:rgba(12,10,14,0.88); backdrop-filter:blur(10px);
@@ -131,14 +123,12 @@
         }
         .close-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-        /* History */
         .hist-item {
             background:var(--card); border:1px solid var(--border); border-radius:10px;
             padding:.6rem 1rem; display:flex; align-items:center; gap:.7rem;
             animation:slideIn .35s ease;
         }
         @keyframes slideIn { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
-        @keyframes pulse { 0%,100%{opacity:.6} 50%{opacity:1} }
 
         .badge {
             display:inline-block; padding:.2rem .7rem; border-radius:20px;
@@ -146,8 +136,8 @@
         }
         .badge-f { background:rgba(155,35,53,0.2); color:#E8637A; border:1px solid rgba(155,35,53,0.3); }
         .badge-m { background:rgba(26,92,92,0.2); color:#4ECDC4; border:1px solid rgba(26,92,92,0.3); }
+        .badge-noli { background:rgba(201,168,76,0.15); color:#C9A84C; border:1px solid rgba(201,168,76,0.3); }
 
-        /* Decorative separator */
         .sep {
             display:flex; align-items:center; gap:1rem; justify-content:center;
             color:var(--muted); font-size:.75rem;
@@ -157,12 +147,17 @@
             background:linear-gradient(to right, transparent, var(--border), transparent);
         }
 
-        /* Confetti canvas */
         #confettiCvs {
             position:fixed; inset:0; z-index:99; pointer-events:none;
         }
 
-        /* Scrollbar */
+        .noli-tag {
+            display:inline-block; font-size:.6rem; padding:.1rem .4rem;
+            border-radius:8px; background:rgba(201,168,76,0.2);
+            color:var(--accent); font-weight:700; margin-left:.3rem;
+            vertical-align:middle; letter-spacing:.03em;
+        }
+
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-track { background:var(--bg); }
         ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
@@ -186,10 +181,9 @@
 
 <main class="relative z-10 flex flex-col items-center min-h-screen px-4 py-8">
 
-    <!-- Header -->
     <header class="text-center mb-6">
         <p class="text-sm tracking-[.3em] uppercase mb-2" style="color:var(--muted);">
-            <i class="fa-solid fa-book-open mr-2"></i>Jose Rizal's Novel
+            <i class="fa-solid fa-book-open mr-2"></i>Jose Rizal's Novels
         </p>
         <h1 class="font-display font-black text-4xl sm:text-5xl md:text-6xl leading-tight" style="color:var(--fg);">
             El Filibusterismo
@@ -198,9 +192,11 @@
         <div class="sep mt-4">
             <i class="fa-solid fa-diamond" style="font-size:.5rem;"></i>
         </div>
+        <p class="text-xs mt-2" style="color:var(--muted);">
+            <span class="noli-tag">NOLI</span> marks characters originally from Noli Me Tangere
+        </p>
     </header>
 
-    <!-- Category Toggle -->
     <section class="flex mb-8" role="tablist" aria-label="Character category">
         <button class="cat-btn active" role="tab" aria-selected="true" data-cat="female" onclick="switchCategory('female')">
             <i class="fa-solid fa-venus mr-1"></i> Girls
@@ -210,7 +206,6 @@
         </button>
     </section>
 
-    <!-- Wheel -->
     <section class="relative mb-8" style="width:min(440px,90vw); height:min(440px,90vw);">
         <div class="pointer-wrap">
             <div class="pointer-dot"></div>
@@ -221,14 +216,12 @@
         <canvas id="wheelCanvas" style="width:100%;height:100%;display:block;"></canvas>
     </section>
 
-    <!-- Spin Button -->
     <section class="mb-10">
         <button class="spin-btn" id="spinBtn" onclick="startSpin()" aria-label="Spin the wheel">
             <i class="fa-solid fa-rotate mr-2"></i>SPIN
         </button>
     </section>
 
-    <!-- History -->
     <section class="w-full max-w-md" id="historySection" style="display:none;">
         <h3 class="font-display font-bold text-lg mb-3 flex items-center gap-2" style="color:var(--muted);">
             <i class="fa-solid fa-clock-rotate-left"></i> Recent Picks
@@ -238,7 +231,6 @@
 
 </main>
 
-<!-- Result Overlay -->
 <div class="result-overlay" id="resultOverlay" role="dialog" aria-modal="true" aria-label="Spin result">
     <div class="result-card">
         <div class="flex justify-end mb-2">
@@ -247,7 +239,8 @@
             </button>
         </div>
         <div id="resultBadge" class="badge mb-4"></div>
-        <h2 id="resultName" class="font-display font-black text-3xl sm:text-4xl mb-4" style="color:var(--fg);"></h2>
+        <h2 id="resultName" class="font-display font-black text-3xl sm:text-4xl mb-1" style="color:var(--fg);"></h2>
+        <div id="resultNoliTag" class="mb-4" style="min-height:20px;"></div>
         <p id="resultDesc" class="text-base leading-relaxed mb-6" style="color:var(--muted);"></p>
         <button onclick="closeResult()" class="spin-btn" style="font-size:1rem;padding:.65rem 2.2rem;">
             <i class="fa-solid fa-arrow-rotate-right mr-2"></i>Spin Again
@@ -259,30 +252,42 @@
 /* ───── Character Data ───── */
 const characters = {
     female: [
-        { name:"Paulita Gomez", desc:"A beautiful and flirtatious young woman. Originally Isagani's girlfriend, she ultimately leaves him for the wealthier Juanito Pelaez, representing superficiality in colonial society." },
-        { name:"Juli", desc:"Daughter of Kabesang Tales and Basilio's beloved. A symbol of tragic Filipino womanhood — her suffering and ultimate fate reflect the oppression of the poor under the friar-dominated system." },
-        { name:"Donya Victorina", desc:"A Filipino woman obsessively mimicking Spanish culture. She wears elaborate European outfits, speaks broken Spanish, and looks down on her own people — the caricature of colonial mentality." },
-        { name:"Dona Consolacion", desc:"The abusive wife of the alferez. She is cruel, especially to those weaker than her, symbolizing how the oppressed can become oppressors when given a sliver of power." },
-        { name:"Pepay", desc:"A dancer who performs at the social gatherings of the elite. Her presence highlights the decadent lifestyle of the colonial upper class and the friars who frequent such entertainment." },
-        { name:"Chichay", desc:"A young servant girl who appears in the household scenes of the novel. She represents the many unnamed and unseen Filipinos who served the colonial elite in silence." }
+        { name:"Paulita Gomez", noli:false, desc:"A beautiful and flirtatious young woman. Originally Isagani's girlfriend, she ultimately leaves him for the wealthier Juanito Pelaez, representing superficiality and materialism in colonial society." },
+        { name:"Juli", noli:false, desc:"Daughter of Kabesang Tales and Basilio's beloved. A symbol of tragic Filipino womanhood — her suffering and ultimate fate reflect the oppression of the poor under the friar-dominated system." },
+        { name:"Donya Victorina", noli:false, desc:"A Filipino woman obsessively mimicking Spanish culture. She wears elaborate European outfits, speaks broken Spanish, and looks down on her own people — the caricature of colonial mentality." },
+        { name:"Dona Consolacion", noli:false, desc:"The abusive wife of the alferez. She is cruel, especially to those weaker than her, symbolizing how the oppressed can become oppressors when given a sliver of power." },
+        { name:"Pepay", noli:false, desc:"A dancer who performs at the social gatherings of the elite. Her presence highlights the decadent lifestyle of the colonial upper class and the friars who frequent such entertainment." },
+        { name:"Chichay", noli:false, desc:"A young servant girl who appears in the household scenes of the novel. She represents the many unnamed and unseen Filipinos who served the colonial elite in silence and obscurity." },
+        { name:"Maria Clara", noli:true, desc:"The tragic heroine of Noli Me Tangere, referenced in El Filibusterismo as having died in the convent. Her fate haunts the novel as a symbol of the innocent lives destroyed by the friars and the colonial system." },
+        { name:"Sisa", noli:true, desc:"The loving mother of Basilio and Crispin from Noli Me Tangere, whose descent into madness and death is recalled by Basilio. She represents the suffering of Filipino mothers ground down by oppression." },
+        { name:"Sinang", noli:true, desc:"Basilio's childhood friend from San Diego, briefly mentioned when he recalls his past. In Noli Me Tangere, she was a cheerful and practical girl — a contrast to the tragedy that surrounded her." },
+        { name:"Dona Pia Alba", noli:true, desc:"Maria Clara's biological mother from Noli Me Tangere, referenced in passing. She died giving birth to Maria Clara, symbolizing the silent suffering of Filipino women erased by history." },
+        { name:"Dona Rufina", noli:true, desc:"Mother of Sisa from Noli Me Tangere, mentioned in Basilio's memories of his family. She represents the generational cycle of poverty and suffering that colonialism imposed on Filipino families." },
+        { name:"Sister Pute", noli:true, desc:"The cruel nun from the convent in Noli Me Tangere, referenced when Maria Clara's fate is recalled. She embodies the institutional cruelty hidden behind the veil of religious piety." }
     ],
     male: [
-        { name:"Simoun", desc:"The mysterious and wealthy jeweler — actually Crisostomo Ibarra in disguise. He returns to the Philippines to incite a violent revolution, driven by vengeance and a desire to overthrow Spanish rule." },
-        { name:"Basilio", desc:"Sisa's surviving son, now a medical student. Torn between his duty to help the sick and his involvement in Simoun's revolutionary plot, he represents the conflicted Filipino youth." },
-        { name:"Isagani", desc:"An idealistic young poet and student, deeply in love with Paulita Gomez. He represents the hopeful, intellectual youth of the Philippines who believe in reform over revolution." },
-        { name:"Juanito Pelaez", desc:"A wealthy, superficial, and boastful student who cares only about social status. He ultimately marries Paulita, representing the shallow elite who benefit from the colonial system." },
-        { name:"Makaraig", desc:"A wealthy and influential student leader. He organizes the petition to establish a Spanish academy for Filipino students, showing the power of organized student action." },
-        { name:"Sandoval", desc:"A Spanish student who surprisingly supports the Filipino students' movement. He proves that not all Spaniards were oppressors — some stood with the natives." },
-        { name:"Pecson", desc:"A cynical and sarcastic student who provides sharp comic relief. His biting observations cut through the hypocrisy of colonial society with brutal honesty." },
-        { name:"Tadeo", desc:"A student who would rather chase pleasure and attend fiestas than study. He represents those who waste their opportunities under a system that limits them anyway." },
-        { name:"Placido Penitente", desc:"A brilliant but deeply frustrated student, trapped between obedience to his domineering mother and his burning desire for intellectual freedom and self-determination." },
-        { name:"Don Custodio", desc:"A high-ranking government official famous for never making decisions. He symbolizes the bureaucratic paralysis and indecisiveness of the Spanish colonial government." },
-        { name:"Padre Salvi", desc:"The scheming Franciscan friar from Noli Me Tangere, now even more powerful in the church hierarchy. He continues to manipulate events from the shadows." },
-        { name:"Padre Camorra", desc:"A lecherous friar who uses his position to prey on young women. He represents the worst of clerical abuse and moral corruption in the novel." },
-        { name:"Padre Irene", desc:"A seemingly kind and jovial friar who actually manipulates events behind the scenes. He shows how appearances can be deeply deceptive in the church." },
-        { name:"Padre Florentino", desc:"Isagani's uncle, a retired and principled priest. He represents the ideal of what clergy should be — wise, compassionate, and truly devoted to his people." },
-        { name:"Quiroga", desc:"A Chinese merchant who dreams of becoming a consul and gaining social prominence. He represents the foreign merchant class that profited under colonial rule." },
-        { name:"Don Tiburcio", desc:"Donya Victorina's hapless husband, a fake Spanish doctor who endures constant humiliation. He is a pitiable figure, a victim of his wife's delusions of grandeur." }
+        { name:"Simoun", noli:false, desc:"The mysterious and wealthy jeweler — actually Crisostomo Ibarra in disguise. He returns to the Philippines to incite a violent revolution, driven by vengeance and a desire to overthrow Spanish rule." },
+        { name:"Basilio", noli:false, desc:"Sisa's surviving son, now a medical student. Torn between his duty to help the sick and his involvement in Simoun's revolutionary plot, he represents the conflicted Filipino youth." },
+        { name:"Isagani", noli:false, desc:"An idealistic young poet and student, deeply in love with Paulita Gomez. He represents the hopeful, intellectual youth of the Philippines who believe in reform over revolution." },
+        { name:"Juanito Pelaez", noli:false, desc:"A wealthy, superficial, and boastful student who cares only about social status. He ultimately marries Paulita, representing the shallow elite who benefit from the colonial system." },
+        { name:"Makaraig", noli:false, desc:"A wealthy and influential student leader. He organizes the petition to establish a Spanish academy for Filipino students, showing the power of organized student action." },
+        { name:"Sandoval", noli:false, desc:"A Spanish student who surprisingly supports the Filipino students' movement. He proves that not all Spaniards were oppressors — some stood with the natives in solidarity." },
+        { name:"Pecson", noli:false, desc:"A cynical and sarcastic student who provides sharp comic relief. His biting observations cut through the hypocrisy of colonial society with brutal honesty and dark humor." },
+        { name:"Tadeo", noli:false, desc:"A student who would rather chase pleasure and attend fiestas than study. He represents those who waste their opportunities under a system that limits them anyway." },
+        { name:"Placido Penitente", noli:false, desc:"A brilliant but deeply frustrated student, trapped between obedience to his domineering mother and his burning desire for intellectual freedom and self-determination." },
+        { name:"Don Custodio", noli:false, desc:"A high-ranking government official famous for never making decisions. He symbolizes the bureaucratic paralysis and indecisiveness of the Spanish colonial government." },
+        { name:"Padre Salvi", noli:false, desc:"The scheming Franciscan friar from Noli Me Tangere, now even more powerful in the church hierarchy. He continues to manipulate events from the shadows with cunning precision." },
+        { name:"Padre Camorra", noli:false, desc:"A lecherous friar who uses his position to prey on young women. He represents the worst of clerical abuse and moral corruption that the novel denounces." },
+        { name:"Padre Irene", noli:false, desc:"A seemingly kind and jovial friar who actually manipulates events behind the scenes. He shows how appearances can be deeply deceptive within the church." },
+        { name:"Padre Florentino", noli:false, desc:"Isagani's uncle, a retired and principled priest. He represents the ideal of what clergy should be — wise, compassionate, and truly devoted to his people's welfare." },
+        { name:"Quiroga", noli:false, desc:"A Chinese merchant who dreams of becoming a consul and gaining social prominence. He represents the foreign merchant class that profited under colonial rule." },
+        { name:"Don Tiburcio", noli:false, desc:"Donya Victorina's hapless husband, a fake Spanish doctor who endures constant humiliation. He is a pitiable figure, a victim of his wife's delusions of grandeur." },
+        { name:"Kabesang Tales", noli:false, desc:"Father of Juli, a hardworking farmer whose land was unjustly seized by the friars. His transformation into the bandit Matanglawin shows how injustice can turn a good man into a rebel." },
+        { name:"Ben Zayb", noli:false, desc:"A journalist and writer who fancies himself a great intellectual. His shallow commentary represents the compromised press under colonial rule — all noise, no substance." },
+        { name:"Elias", noli:true, desc:"The mysterious revolutionary from Noli Me Tangere, referenced by Basilio as the man who saved his life. Though absent, his spirit of sacrifice lives on as an inspiration for the revolution Simoun seeks." },
+        { name:"Padre Damaso", noli:true, desc:"The antagonist friar from Noli Me Tangere, referenced as Maria Clara's true father. Though he does not appear directly, his past sins set in motion the tragedies that echo throughout El Filibusterismo." },
+        { name:"Crispin", noli:true, desc:"Sisa's younger son from Noli Me Tangere, mentioned in Basilio's painful memories. His unjust death at the hands of the church symbolizes the murder of innocent Filipino children by the friars." },
+        { name:"Don Rafael Ibarra", noli:true, desc:"Father of Crisostomo Ibarra from Noli Me Tangere, referenced as Simoun's father. His unjust death for defending a Filipino worker shows how the system crushed even the wealthy who defied it." }
     ]
 };
 
@@ -341,7 +346,6 @@ function drawWheel() {
         const a0 = i * seg + rotation;
         const a1 = (i + 1) * seg + rotation;
 
-        // Fill
         wCtx.beginPath();
         wCtx.moveTo(cx, cy);
         wCtx.arc(cx, cy, outerR, a0, a1);
@@ -349,7 +353,6 @@ function drawWheel() {
         wCtx.fillStyle = segColor(i);
         wCtx.fill();
 
-        // Subtle inner gradient overlay for depth
         const grad = wCtx.createRadialGradient(cx, cy, innerR, cx, cy, outerR);
         grad.addColorStop(0, 'rgba(0,0,0,0.25)');
         grad.addColorStop(0.5, 'rgba(0,0,0,0.05)');
@@ -357,16 +360,32 @@ function drawWheel() {
         wCtx.fillStyle = grad;
         wCtx.fill();
 
-        // Segment border
         wCtx.strokeStyle = 'rgba(0,0,0,0.35)';
         wCtx.lineWidth = 1.5 * dpr;
         wCtx.stroke();
+
+        // Noli indicator dot
+        if (currentChars[i].noli) {
+            const dotAngle = a0 + seg / 2;
+            const dotDist = outerR * 0.88;
+            const dx = cx + Math.cos(dotAngle) * dotDist;
+            const dy = cy + Math.sin(dotAngle) * dotDist;
+            wCtx.beginPath();
+            wCtx.arc(dx, dy, Math.max(1, 3.5 * dpr), 0, Math.PI * 2);
+            wCtx.fillStyle = '#C9A84C';
+            wCtx.fill();
+        }
 
         // Text
         wCtx.save();
         wCtx.translate(cx, cy);
         wCtx.rotate(a0 + seg / 2);
-        const fontSize = n <= 8 ? 15 * dpr : n <= 12 ? 13 * dpr : 11.5 * dpr;
+        let fontSize;
+        if (n <= 8) fontSize = 15 * dpr;
+        else if (n <= 12) fontSize = 13 * dpr;
+        else if (n <= 16) fontSize = 12 * dpr;
+        else if (n <= 20) fontSize = 10.5 * dpr;
+        else fontSize = 9.5 * dpr;
         wCtx.font = `700 ${fontSize}px "Source Sans 3",sans-serif`;
         wCtx.textAlign = 'right';
         wCtx.textBaseline = 'middle';
@@ -378,7 +397,7 @@ function drawWheel() {
         wCtx.restore();
     }
 
-    // Pegs at segment boundaries
+    // Pegs
     for (let i = 0; i < n; i++) {
         const a = i * seg + rotation;
         const px = cx + Math.cos(a) * (outerR + 1 * dpr);
@@ -404,7 +423,6 @@ function drawWheel() {
     wCtx.lineWidth = 3 * dpr;
     wCtx.stroke();
 
-    // Center icon
     wCtx.fillStyle = '#C9A84C';
     wCtx.font = `900 ${13 * dpr}px "Playfair Display",serif`;
     wCtx.textAlign = 'center';
@@ -416,7 +434,6 @@ function drawWheel() {
 function getWinnerIndex() {
     const n = currentChars.length;
     const seg = (2 * Math.PI) / n;
-    // Pointer is at top = -PI/2 in canvas coords
     const norm = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
     const pointerAngle = (2 * Math.PI - norm + Math.PI * 1.5) % (2 * Math.PI);
     return Math.floor(pointerAngle / seg) % n;
@@ -467,16 +484,15 @@ function startSpin() {
     spinning = true;
     document.getElementById('spinBtn').disabled = true;
     document.getElementById('wheelGlow').classList.add('on');
-    velocity = 0.25 + Math.random() * 0.2; // rad per frame
+    velocity = 0.25 + Math.random() * 0.2;
     lastSegment = getWinnerIndex();
     requestAnimationFrame(spinFrame);
 }
 
 function spinFrame() {
     rotation += velocity;
-    velocity *= 0.988; // friction
+    velocity *= 0.988;
 
-    // Tick sound on segment change
     const curSeg = getWinnerIndex();
     if (curSeg !== lastSegment) {
         playTick();
@@ -488,7 +504,6 @@ function spinFrame() {
     if (velocity > 0.0008) {
         requestAnimationFrame(spinFrame);
     } else {
-        // Stopped
         spinning = false;
         document.getElementById('spinBtn').disabled = false;
         document.getElementById('wheelGlow').classList.remove('on');
@@ -527,6 +542,12 @@ function showResult(char) {
         badge.className = 'badge badge-m';
         badge.textContent = 'Male Character';
     }
+    const noliTag = document.getElementById('resultNoliTag');
+    if (char.noli) {
+        noliTag.innerHTML = '<span class="noli-tag" style="font-size:.7rem;padding:.2rem .6rem;">FROM NOLI ME TANGERE</span>';
+    } else {
+        noliTag.innerHTML = '';
+    }
     overlay.classList.add('show');
     launchConfetti();
 }
@@ -535,18 +556,16 @@ function closeResult() {
     document.getElementById('resultOverlay').classList.remove('show');
 }
 
-// Close on overlay click (not card)
 document.getElementById('resultOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeResult();
 });
-// Close on Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeResult();
 });
 
 /* ───── History ───── */
 function addHistory(char) {
-    history.unshift({ name: char.name, cat: currentCat });
+    history.unshift({ name: char.name, cat: currentCat, noli: char.noli });
     if (history.length > 20) history.pop();
     renderHistory();
 }
@@ -562,6 +581,7 @@ function renderHistory() {
         div.innerHTML = `
             <span style="color:var(--muted);font-size:.85rem;min-width:22px;">${i + 1}.</span>
             <span class="font-display font-bold" style="flex:1;">${h.name}</span>
+            ${h.noli ? '<span class="noli-tag" style="font-size:.55rem;padding:.1rem .35rem;">NOLI</span>' : ''}
             <span class="badge ${h.cat === 'female' ? 'badge-f' : 'badge-m'}" style="font-size:.65rem;padding:.15rem .5rem;">
                 ${h.cat === 'female' ? 'F' : 'M'}
             </span>
@@ -681,7 +701,6 @@ function particleLoop() {
 }
 particleLoop();
 
-/* ───── Initial Draw ───── */
 drawWheel();
 </script>
 </body>
